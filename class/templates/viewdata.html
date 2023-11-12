@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{ message }}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+    <table class="table mt-5 tbl">
+        <h1>Students - Tabular</h1>
+    {% if data %}
+    {% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{ message }}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Age</th>
+          <th scope="col">Image</th>
+            <th scope=col">Edit</th>
+            <th scope=col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for dd in data %}
+        <tr>
+          <th scope="row">{{ dd.id }}</th>
+          <td>{{ dd.name }}</td>
+          <td>{{ dd.email }}</td>
+          <td>{{ dd.age }}</td>
+          <td><img src="media/{{ dd.image }}" alt="{{ dd.name }}" width="100", height="100"></td>
+            <td>
+                <a class="btn btn-warning" href="/edit/{{ dd.id }}">Edit</a>
+            </td>
+            <td>
+                <a class="btn btn-danger" href="/delete/{{ dd.id }}">Delete</a>
+            </td>
+
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p><strong>No records found</strong></p>
+        <img src="{% static 'images/norecords.png' %}" alt="No records">
+    {% endif %}
+    <h1>Students - Grid</h1>
+    {% if data %}
+    <div class="row">
+    {% for dd in data %}
+
+            <div class="card col-md-4 mx-3 mt-5" style="width: 18rem;">
+              <img src="media/{{ dd.image }}" class="card-img-top" alt="{{ dd.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ dd.name }}</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">{{ dd.created_at }}</a>
+                </div>
+        </div>
+    {% endfor %}
+    </div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center mt-5">
+
+
+
+{% if data.has_previous %}
+	<li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+
+	<li class="page-item"><a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a></li>
+
+{% endif %}
+
+
+<li class="page-item disabled"><a href="#" class="page-link">Page {{ data.number }} of {{ data.paginator.num_pages }}</a></li>
+
+
+{% for i in nums %}
+	<li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+
+{% endfor %}
+
+
+{% if data.has_next %}
+	<li class="page-item"><a class="page-link" href="?page={{ data.next_page_number }}">Next</a></li>
+
+	<li class="page-item"><a class="page-link" href="?page={{ data.paginator.num_pages }}">Last &raquo</a></li>
+
+{% endif %}
+
+ </ul>
+</nav>
+</div>
+    {% else %}
+    <p><strong>No records found</strong></p>
+        <img src="{% static 'images/norecords.png' %}" alt="No records">
+    {% endif %}
+{% endblock %}
